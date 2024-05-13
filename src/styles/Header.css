@@ -1,0 +1,16 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.name {
+  color: #43d967;
+}
+
+.header h1 {
+  text-align: left;
+  margin-left: 30px;
+}

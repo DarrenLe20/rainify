@@ -1,0 +1,52 @@
+/* Weather.css */
+
+.weather-container {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 25px;
+  background-color: #121212;
+  display: flex; /* Use flexbox to control layout */
+}
+
+.weather-card {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.weather-card h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.weather-card p {
+  margin: 5px 0;
+  text-align: right;
+}
+
+.weather-card img {
+  width: 50px;
+  height: 50px;
+}
+
+.weather-icon {
+  display: flex;
+  align-items: center;
+}
+
+#temp {
+  font-size: 2rem;
+  font-weight: bold;
+}
