@@ -78,7 +78,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
 
       // Fetch 50 random tracks
       const response = await fetch(
-        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=60&market=US`,
+        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&market=US`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -90,7 +90,6 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       }
       const data = await response.json();
       const tracks = data.tracks.items;
-      const valence = getValence(weatherCode!);
 
       // Get audio features for all tracks
       const tracksIds = tracks.map((track: any) => track.id).join(",");
@@ -108,6 +107,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       const audioFeaturesData = await audioFeaturesResponse.json();
 
       // Filter tracks by valence
+      const valence = getValence(weatherCode!);
+
       for (let i = 0; i < tracks.length; i++) {
         tracks[i].valence = audioFeaturesData.audio_features[i].valence;
       }
