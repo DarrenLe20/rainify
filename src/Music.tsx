@@ -108,6 +108,10 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         const valence = getValence(weatherCode!);
 
         for (let i = 0; i < tracks.length; i++) {
+          if (!audioFeaturesData.audio_features[i]?.valence) {
+            console.warn(`Track ${tracks[i].id} is missing valence data`);
+            continue; // Skip tracks without valence data
+          }
           tracks[i].valence = audioFeaturesData.audio_features[i].valence;
         }
         const filteredTracks = tracks.filter(
