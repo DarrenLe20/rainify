@@ -40,7 +40,7 @@ function Weather({ weatherCheck, daytime, weatherCode }: WeatherProps) {
             const lon = position.coords.longitude;
             const cityName = await getCityName(lat, lon);
             const response = await fetch(
-              `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
+              `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
             );
             if (!response.ok) {
               throw new Error("Failed to fetch weather data");
@@ -65,7 +65,7 @@ function Weather({ weatherCheck, daytime, weatherCode }: WeatherProps) {
   // Reverse geocoding
   async function getCityName(lat: number, lon: number) {
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`
+      `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch weather data");
