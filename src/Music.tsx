@@ -26,38 +26,30 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
-    const fetchMusicData = async () => {
+    const fetchAccessToken = async () => {
       try {
-        var authParams = {
+        const response = await fetch("https://accounts.spotify.com/api/token", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body:
-            "grant_type=client_credentials&client_id=" +
-            API_KEY +
-            "&client_secret=" +
-            SECRET_KEY,
-        };
-        await fetch("https://accounts.spotify.com/api/token", authParams)
-          .then((response) => response.json())
-          .then((data) => setAccessToken(data.access_token));
+          body: `grant_type=client_credentials&client_id=${API_KEY}&client_secret=${SECRET_KEY}`,
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch access token");
+        }
+        const data = await response.json();
+        setAccessToken(data.access_token);
       } catch (error) {
         console.error("Error fetching access token: ", error);
       }
     };
-    fetchMusicData();
+    fetchAccessToken();
   }, []);
 
-  function dayOrNight() {
-    if (daytime) {
-      return "day";
-    } else {
-      return "night";
-    }
-  }
+  const dayOrNight = () => (daytime ? "day" : "night");
 
-  async function handleRoll() {
+  const handleRoll = async () => {
     try {
       const getRandomSongsArray = [
         "%25a%25",
@@ -76,14 +68,14 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         "u%25",
         "%25u",
       ];
-      let getRandomOffset = Math.floor(Math.random() * 200);
       const getRandomSongs =
         getRandomSongsArray[
           Math.floor(Math.random() * getRandomSongsArray.length)
         ];
-      let validTracks: Track[] = [];
 
-      // Fetch 50 random tracks
+      let validTracks: Track[] = [];
+      let getRandomOffset = Math.floor(Math.random() * 200);
+
       while (validTracks.length < 5) {
         const response = await fetch(
           `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&market=US`,
@@ -99,7 +91,6 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         const data = await response.json();
         const tracks = data.tracks.items;
 
-        // Get audio features for all tracks
         const tracksIds = tracks.map((track: any) => track.id).join(",");
         const audioFeaturesResponse = await fetch(
           `https://api.spotify.com/v1/audio-features?ids=${tracksIds}`,
@@ -114,7 +105,6 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         }
         const audioFeaturesData = await audioFeaturesResponse.json();
 
-        // Filter tracks by valence
         const valence = getValence(weatherCode!);
 
         for (let i = 0; i < tracks.length; i++) {
@@ -126,23 +116,19 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
             track.valence < WEATHER_VALENCE[valence][1]
         );
 
-        // Add filtered tracks to validTracks array
         validTracks = validTracks.concat(filteredTracks);
-
-        // Update offset for next fetch
         getRandomOffset += 50;
       }
 
-      // Get 5 random tracks from the filtered list
       const randomTracks = getRandomElements(validTracks, 5);
       setTracks(randomTracks);
       console.log(randomTracks);
     } catch (error) {
       console.error("Error fetching random tracks:", error);
     }
-  }
+  };
 
-  function getValence(weatherCode: number) {
+  const getValence = (weatherCode: number) => {
     const possibleMoods = [];
     for (const mood in WEATHER_CATEGORIES_CODE) {
       if (WEATHER_CATEGORIES_CODE[mood].includes(weatherCode)) {
@@ -156,14 +142,14 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       return mood;
     }
     return "unknown";
-  }
+  };
 
-  function getRandomElements(array: any[], numElements: number) {
+  const getRandomElements = (array: any[], numElements: number) => {
     const shuffled = array.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, numElements);
-  }
+  };
 
-  function renderTrackCards() {
+  const renderTrackCards = () => {
     return tracks.map((track) => (
       <a
         key={track.id}
@@ -179,7 +165,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         </div>
       </a>
     ));
-  }
+  };
 
   return (
     <div className="music-container">
