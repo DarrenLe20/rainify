@@ -50,11 +50,6 @@ jobs:
         with:
           # Upload dist folder
           path: "./dist"
-      - name: Set environment secrets
-        run: |
-          echo "VITE_OPENWEATHER_API_KEY=${{ secrets.VITE_OPENWEATHER_API_KEY }}" >> $GITHUB_ENV &&
-          echo "VITE_SPOTIFY_API_KEY=${{ secrets.VITE_SPOTIFY_API_KEY }}" >> $GITHUB_ENV &&
-          echo "VITE_SPOTIFY_SECRET=${{ secrets.VITE_SPOTIFY_SECRET }}" >> $GITHUB_ENV
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
