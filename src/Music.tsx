@@ -78,7 +78,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
 
       // Fetch 50 random tracks
       const response = await fetch(
-        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=50&market=US`,
+        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=60&market=US`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
