@@ -62,64 +62,79 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       const getRandomSongsArray = [
         "%25a%25",
         "a%25",
+        "%25a",
         "%25e%25",
         "e%25",
+        "%25e",
         "%25i%25",
         "i%25",
+        "%25i",
         "%25o%25",
         "o%25",
+        "%25o",
+        "%25u%25",
+        "u%25",
+        "%25u",
       ];
+      let getRandomOffset = Math.floor(Math.random() * 200);
       const getRandomSongs =
         getRandomSongsArray[
           Math.floor(Math.random() * getRandomSongsArray.length)
         ];
-      console.log(getRandomSongs);
-      const getRandomOffset = Math.floor(Math.random() * 1000) + 1; // Random offset between 1 and 1000
+      let validTracks: Track[] = [];
 
       // Fetch 50 random tracks
-      const response = await fetch(
-        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&market=US`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      while (validTracks.length < 5) {
+        const response = await fetch(
+          `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&market=US`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch random tracks");
         }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch random tracks");
-      }
-      const data = await response.json();
-      const tracks = data.tracks.items;
+        const data = await response.json();
+        const tracks = data.tracks.items;
 
-      // Get audio features for all tracks
-      const tracksIds = tracks.map((track: any) => track.id).join(",");
-      const audioFeaturesResponse = await fetch(
-        `https://api.spotify.com/v1/audio-features?ids=${tracksIds}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        // Get audio features for all tracks
+        const tracksIds = tracks.map((track: any) => track.id).join(",");
+        const audioFeaturesResponse = await fetch(
+          `https://api.spotify.com/v1/audio-features?ids=${tracksIds}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (!audioFeaturesResponse.ok) {
+          throw new Error("Failed to fetch audio features");
         }
-      );
-      if (!audioFeaturesResponse.ok) {
-        throw new Error("Failed to fetch audio features");
-      }
-      const audioFeaturesData = await audioFeaturesResponse.json();
+        const audioFeaturesData = await audioFeaturesResponse.json();
 
-      // Filter tracks by valence
-      const valence = getValence(weatherCode!);
+        // Filter tracks by valence
+        const valence = getValence(weatherCode!);
 
-      for (let i = 0; i < tracks.length; i++) {
-        tracks[i].valence = audioFeaturesData.audio_features[i].valence;
+        for (let i = 0; i < tracks.length; i++) {
+          tracks[i].valence = audioFeaturesData.audio_features[i].valence;
+        }
+        const filteredTracks = tracks.filter(
+          (track: any) =>
+            track.valence > WEATHER_VALENCE[valence][0] &&
+            track.valence < WEATHER_VALENCE[valence][1]
+        );
+
+        // Add filtered tracks to validTracks array
+        validTracks = validTracks.concat(filteredTracks);
+
+        // Update offset for next fetch
+        getRandomOffset += 50;
       }
-      const filteredTracks = tracks.filter(
-        (track: any) =>
-          track.valence > WEATHER_VALENCE[valence][0] &&
-          track.valence < WEATHER_VALENCE[valence][1]
-      );
 
       // Get 5 random tracks from the filtered list
-      const randomTracks = getRandomElements(filteredTracks, 5);
+      const randomTracks = getRandomElements(validTracks, 5);
       setTracks(randomTracks);
       console.log(randomTracks);
     } catch (error) {
