@@ -16,9 +16,9 @@ export const WEATHER_CATEGORIES_CODE: { [key: string]: number[] } = {
 
 export const WEATHER_VALENCE: { [key: string]: [number, number] } = {
   fun: [0.8, 1],
-  good: [0.7, 1],
-  chill: [0.5, 0.7],
-  moody: [0.2, 0.5],
+  good: [0.6, 0.8],
+  chill: [0.4, 0.6],
+  moody: [0.3, 0.4],
   bad: [0, 0.3],
 };
 

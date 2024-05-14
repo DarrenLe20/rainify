@@ -113,8 +113,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       }
       const filteredTracks = tracks.filter(
         (track: any) =>
-          track.valence >= WEATHER_VALENCE[valence][0] &&
-          track.valence <= WEATHER_VALENCE[valence][1]
+          track.valence > WEATHER_VALENCE[valence][0] &&
+          track.valence < WEATHER_VALENCE[valence][1]
       );
 
       // Get 7 random tracks from the filtered list
