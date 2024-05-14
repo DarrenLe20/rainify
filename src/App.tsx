@@ -7,6 +7,7 @@ import "./styles/App.css";
 
 function App() {
   const [weatherDesc, setWeatherDesc] = useState<string | null>(null);
+  const [weatherCode, setWeatherCode] = useState<number | null>(null);
   const [dayTime, setDayTime] = useState<boolean>(false);
 
   return (
@@ -14,10 +15,18 @@ function App() {
       <Header />
       <div className="page-content">
         <div className="weather">
-          <Weather weatherCheck={setWeatherDesc} daytime={setDayTime} />
+          <Weather
+            weatherCheck={setWeatherDesc}
+            daytime={setDayTime}
+            weatherCode={setWeatherCode}
+          />
         </div>
         <div className="music">
-          <Music weather={weatherDesc} daytime={dayTime} />
+          <Music
+            weather={weatherDesc}
+            daytime={dayTime}
+            weatherCode={weatherCode}
+          />
         </div>
       </div>
       <Footer />

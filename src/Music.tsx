@@ -12,6 +12,7 @@ const GENRES = algoConst.GENRES;
 interface MusicProps {
   weather: string | null;
   daytime: boolean;
+  weatherCode: number | null;
 }
 
 interface Track {
@@ -22,7 +23,7 @@ interface Track {
   external_urls: { spotify: string };
 }
 
-function Music({ weather, daytime }: MusicProps) {
+function Music({ weather, daytime, weatherCode }: MusicProps) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
 
@@ -59,7 +60,6 @@ function Music({ weather, daytime }: MusicProps) {
   }
 
   async function handleRoll() {
-    console.log("clicked");
     try {
       const getRandomSongsArray = [
         "%25a%25",
@@ -78,7 +78,7 @@ function Music({ weather, daytime }: MusicProps) {
       console.log(getRandomSongs);
       const getRandomOffset = Math.floor(Math.random() * 1000) + 1; // Random offset between 1 and 1000
       const response = await fetch(
-        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=10&market=US`,
+        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=50&market=US`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -90,12 +90,48 @@ function Music({ weather, daytime }: MusicProps) {
       }
       const data = await response.json();
       const tracks = data.tracks.items;
-      const randomTracks = getRandomElements(tracks, 10);
+      const valence = getValence(weatherCode!);
+      // Get audio features for all tracks
+      const tracksIds = tracks.map((track: any) => track.id).join(",");
+      const audioFeaturesResponse = await fetch(
+        `https://api.spotify.com/v1/audio-features?ids=${tracksIds}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!audioFeaturesResponse.ok) {
+        throw new Error("Failed to fetch audio features");
+      }
+      const audioFeaturesData = await audioFeaturesResponse.json();
+      console.log(audioFeaturesData);
+      // Filter tracks by valence
+      for (let i = 0; i < tracks.length; i++) {
+        tracks[i].valence = audioFeaturesData.audio_features[i].valence;
+      }
+      const filteredTracks = tracks.filter(
+        (track: any) =>
+          track.valence >= WEATHER_VALENCE[valence][0] &&
+          track.valence <= WEATHER_VALENCE[valence][1]
+      );
+      // Get 5 random tracks from the filtered list
+      const randomTracks = getRandomElements(filteredTracks, 5);
       setTracks(randomTracks);
       console.log(randomTracks);
     } catch (error) {
       console.error("Error fetching random tracks:", error);
     }
+  }
+
+  function getValence(weatherCode: number) {
+    for (const mood in WEATHER_CATEGORIES_CODE) {
+      if (WEATHER_CATEGORIES_CODE[mood].includes(weatherCode)) {
+        console.log(mood);
+        return mood;
+      }
+    }
+    return "unknown";
   }
 
   function getRandomElements(array: any[], numElements: number) {

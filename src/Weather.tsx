@@ -25,15 +25,15 @@ interface WeatherData {
 interface WeatherProps {
   weatherCheck: (description: string) => void;
   daytime: (description: boolean) => void;
+  weatherCode: (code: number) => void;
 }
 
-function Weather({ weatherCheck, daytime }: WeatherProps) {
+function Weather({ weatherCheck, daytime, weatherCode }: WeatherProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        // location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(async (position) => {
             const lat = position.coords.latitude;
@@ -49,6 +49,7 @@ function Weather({ weatherCheck, daytime }: WeatherProps) {
             setWeather(data);
             console.log(data);
             weatherCheck(data.weather[0].description);
+            weatherCode(data.weather[0].id);
             daytime(isDayTime(data));
           });
         } else {
@@ -71,7 +72,6 @@ function Weather({ weatherCheck, daytime }: WeatherProps) {
     }
     const data = await response.json();
     if (data.length > 0) {
-      console.log(data[0].name);
       const cityName = data[0].name.replace(/\s+/g, "+");
       return cityName;
     } else {

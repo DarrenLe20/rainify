@@ -1,5 +1,5 @@
-export const WEATHER_CATEGORIES_CODE = {
-  fun: [800, 801, 802, 803, 804],
+export const WEATHER_CATEGORIES_CODE: { [key: string]: number[] } = {
+  fun: [800, 801, 802],
   good: [600, 601, 800, 801, 802],
   moody: [
     300, 301, 302, 310, 311, 312, 313, 314, 321, 500, 501, 502, 503, 520, 521,
@@ -14,7 +14,7 @@ export const WEATHER_CATEGORIES_CODE = {
   bad: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232, 504, 511, 622, 781],
 };
 
-export const WEATHER_VALENCE = {
+export const WEATHER_VALENCE: { [key: string]: [number, number] } = {
   fun: [0.8, 1],
   good: [0.7, 1],
   chill: [0.5, 0.7],
