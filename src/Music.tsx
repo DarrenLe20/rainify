@@ -105,7 +105,6 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         throw new Error("Failed to fetch audio features");
       }
       const audioFeaturesData = await audioFeaturesResponse.json();
-      console.log(audioFeaturesData);
       // Filter tracks by valence
       for (let i = 0; i < tracks.length; i++) {
         tracks[i].valence = audioFeaturesData.audio_features[i].valence;
@@ -115,8 +114,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
           track.valence >= WEATHER_VALENCE[valence][0] &&
           track.valence <= WEATHER_VALENCE[valence][1]
       );
-      // Get 5 random tracks from the filtered list
-      const randomTracks = getRandomElements(filteredTracks, 5);
+      // Get 7 random tracks from the filtered list
+      const randomTracks = getRandomElements(filteredTracks, 7);
       setTracks(randomTracks);
       console.log(randomTracks);
     } catch (error) {
