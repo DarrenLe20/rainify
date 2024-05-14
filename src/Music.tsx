@@ -24,6 +24,7 @@ interface Track {
 function Music({ weather, daytime, weatherCode }: MusicProps) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAccessToken = async () => {
@@ -50,6 +51,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
   const dayOrNight = () => (daytime ? "day" : "night");
 
   const handleRoll = async () => {
+    setIsLoading(true); // Start loading animation
     try {
       const getRandomSongsArray = [
         "%25a%25",
@@ -129,6 +131,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       console.log(randomTracks);
     } catch (error) {
       console.error("Error fetching random tracks:", error);
+    } finally {
+      setIsLoading(false); // Stop loading animation
     }
   };
 
@@ -181,8 +185,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
           </p>
         )}
       </div>
-      <button className="roll-btn" onClick={handleRoll}>
-        OwO
+      <button className="roll-btn" onClick={handleRoll} disabled={isLoading}>
+        {isLoading ? "Gimme a sec" : "OwO"}
       </button>
       <div className="track-container">{renderTrackCards()}</div>
     </div>
