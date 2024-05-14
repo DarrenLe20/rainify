@@ -4,8 +4,9 @@
   width: 100%;
 }
 
-.name {
+.user-name {
   color: #43d967;
+  text-transform: uppercase;
 }
 
 .header h1 {

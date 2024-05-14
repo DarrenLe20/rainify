@@ -115,7 +115,7 @@ function Music({ weather, daytime }: MusicProps) {
         {weather && (
           <p>
             A tune for a {dayOrNight()} of{" "}
-            <span className="name">{weather}</span>
+            <span className="weather-cond">{weather}</span>
           </p>
         )}
       </div>
