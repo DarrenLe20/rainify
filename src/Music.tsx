@@ -117,8 +117,8 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
           track.valence < WEATHER_VALENCE[valence][1]
       );
 
-      // Get 7 random tracks from the filtered list
-      const randomTracks = getRandomElements(filteredTracks, 7);
+      // Get 5 random tracks from the filtered list
+      const randomTracks = getRandomElements(filteredTracks, 5);
       setTracks(randomTracks);
       console.log(randomTracks);
     } catch (error) {
@@ -127,11 +127,17 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
   }
 
   function getValence(weatherCode: number) {
+    const possibleMoods = [];
     for (const mood in WEATHER_CATEGORIES_CODE) {
       if (WEATHER_CATEGORIES_CODE[mood].includes(weatherCode)) {
-        console.log(mood);
-        return mood;
+        possibleMoods.push(mood);
       }
+    }
+    if (possibleMoods.length > 0) {
+      const mood =
+        possibleMoods[Math.floor(Math.random() * possibleMoods.length)];
+      console.log(mood);
+      return mood;
     }
     return "unknown";
   }
@@ -164,7 +170,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
       <div className="intro">
         {weather && (
           <p>
-            A tune for a {dayOrNight()} of{" "}
+            Some tunes for a {dayOrNight()} of{" "}
             <span className="weather-cond">{weather}</span>
           </p>
         )}
