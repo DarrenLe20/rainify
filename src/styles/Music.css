@@ -1,0 +1,61 @@
+.track-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(200px, 1fr)
+  ); /* Adjust card width as needed */
+  gap: 20px; /* Adjust the gap between cards */
+  text-decoration: none;
+}
+
+.track-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.track-card:hover {
+  transform: translateY(-5px);
+}
+
+.track-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.track-info {
+  margin-top: 10px;
+}
+
+.track-info h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.track-info p {
+  font-size: 1em;
+  margin: 5px 0 0;
+}
+
+.roll-btn {
+  background-color: #43d967;
+  color: #000000;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 30px;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 0.6em 1.2em;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.roll-btn:active {
+  background-color: #2f9e4f;
+  transform: translateY(2px);
+}

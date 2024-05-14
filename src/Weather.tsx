@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./styles/Weather.css";
 
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 // interface for weather data
 interface WeatherData {
   name: string;
@@ -37,9 +39,8 @@ function Weather({ weatherCheck, daytime }: WeatherProps) {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
             const cityName = await getCityName(lat, lon);
-            const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
             const response = await fetch(
-              `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`
+              `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
             );
             if (!response.ok) {
               throw new Error("Failed to fetch weather data");
@@ -60,20 +61,25 @@ function Weather({ weatherCheck, daytime }: WeatherProps) {
     fetchWeatherData();
   }, []);
 
+  // Reverse geocoding
   async function getCityName(lat: number, lon: number) {
-    const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`
+      `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch weather data");
     }
     const data = await response.json();
-    console.log(data[0].name);
-    const cityName = data[0].name.replace(/\s+/g, "+");
-    return cityName;
+    if (data.length > 0) {
+      console.log(data[0].name);
+      const cityName = data[0].name.replace(/\s+/g, "+");
+      return cityName;
+    } else {
+      throw new Error("Failed to fetch city name");
+    }
   }
 
+  // Check if it is daytime
   function isDayTime(weatherData: WeatherData): boolean {
     if (!weatherData) return false;
     const currentTime = new Date().valueOf() / 1000;
