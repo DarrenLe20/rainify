@@ -76,7 +76,7 @@ function Music({ weather, daytime, weatherCode }: MusicProps) {
         ];
 
       let validTracks: Track[] = [];
-      let getRandomOffset = Math.floor(Math.random() * 200);
+      let getRandomOffset = Math.floor(Math.random() * 800);
 
       while (validTracks.length < 5) {
         const response = await fetch(
