@@ -9,10 +9,9 @@
 }
 
 .track-card {
-  background-color: #1a1a1a;
-  border-radius: 8px;
+  background-color: #121212;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   text-decoration: none;
   color: inherit;
@@ -24,7 +23,7 @@
 
 .track-card img {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .track-info {
@@ -32,12 +31,11 @@
 }
 
 .track-info h3 {
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin: 0;
 }
 
 .track-info p {
-  font-size: 1em;
   margin: 5px 0 0;
 }
 

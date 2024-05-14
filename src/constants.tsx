@@ -1,4 +1,4 @@
-const WEATHER_CATEGORIES_CODE = {
+export const WEATHER_CATEGORIES_CODE = {
   fun: [800, 801, 802, 803, 804],
   good: [600, 601, 800, 801, 802],
   moody: [
@@ -14,7 +14,7 @@ const WEATHER_CATEGORIES_CODE = {
   bad: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232, 504, 511, 622, 781],
 };
 
-const WEATHER_VALENCE = {
+export const WEATHER_VALENCE = {
   fun: [0.8, 1],
   good: [0.7, 1],
   chill: [0.5, 0.7],
@@ -22,7 +22,7 @@ const WEATHER_VALENCE = {
   bad: [0, 0.3],
 };
 
-const WEATHER_CODES = {
+export const WEATHER_CODES = {
   200: "thunderstorm with light rain",
   201: "thunderstorm with rain",
   202: "thunderstorm with heavy rain",
@@ -80,7 +80,7 @@ const WEATHER_CODES = {
   804: "overcast clouds",
 };
 
-const GENRES = [
+export const GENRES = [
   "acoustic",
   "afrobeat",
   "alt-rock",

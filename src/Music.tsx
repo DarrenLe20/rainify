@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import * as algoConst from "./constants";
 import "./styles/Music.css";
 
 const API_KEY = import.meta.env.VITE_SPOTIFY_API_KEY;
 const SECRET_KEY = import.meta.env.VITE_SPOTIFY_SECRET;
+const WEATHER_CATEGORIES_CODE = algoConst.WEATHER_CATEGORIES_CODE;
+const WEATHER_VALENCE = algoConst.WEATHER_VALENCE;
+const WEATHER_CODES = algoConst.WEATHER_CODES;
+const GENRES = algoConst.GENRES;
 
 interface MusicProps {
   weather: string | null;
@@ -22,20 +27,27 @@ function Music({ weather, daytime }: MusicProps) {
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
-    var authParams = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body:
-        "grant_type=client_credentials&client_id=" +
-        API_KEY +
-        "&client_secret=" +
-        SECRET_KEY,
+    const fetchMusicData = async () => {
+      try {
+        var authParams = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body:
+            "grant_type=client_credentials&client_id=" +
+            API_KEY +
+            "&client_secret=" +
+            SECRET_KEY,
+        };
+        await fetch("https://accounts.spotify.com/api/token", authParams)
+          .then((response) => response.json())
+          .then((data) => setAccessToken(data.access_token));
+      } catch (error) {
+        console.error("Error fetching access token: ", error);
+      }
     };
-    fetch("https://accounts.spotify.com/api/token", authParams)
-      .then((response) => response.json())
-      .then((data) => setAccessToken(data.access_token));
+    fetchMusicData();
   }, []);
 
   function dayOrNight() {
