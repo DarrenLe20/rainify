@@ -97,7 +97,7 @@ function Weather({ weatherCheck, daytime, weatherCode }: WeatherProps) {
           <div className="weather-info">
             <div className="weather-icon">
               <img
-                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
                 alt="weather icon"
               />
               <p id="temp">{weather.main.temp.toFixed(0)}°C</p>
