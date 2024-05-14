@@ -3,7 +3,7 @@ import "./styles/Footer.css";
 function Footer() {
   return (
     <div className="footer">
-      <p>❤️ Enjoy! ❤️</p>
+      <p>❤️ for my gf ❤️</p>
     </div>
   );
 }
