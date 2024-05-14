@@ -1,0 +1,19 @@
+.footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  color: #fff; /* Adjust text color as needed */
+  text-transform: uppercase;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-content {
+  flex: 1; /* Allow content to grow and fill remaining space */
+}

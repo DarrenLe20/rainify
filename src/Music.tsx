@@ -66,7 +66,7 @@ function Music({ weather, daytime }: MusicProps) {
       console.log(getRandomSongs);
       const getRandomOffset = Math.floor(Math.random() * 1000) + 1; // Random offset between 1 and 1000
       const response = await fetch(
-        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=10`,
+        `https://api.spotify.com/v1/search?query=${getRandomSongs}&type=track&offset=${getRandomOffset}&limit=10&market=US`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

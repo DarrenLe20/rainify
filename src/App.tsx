@@ -2,6 +2,7 @@ import { useState } from "react";
 import Weather from "./Weather";
 import Header from "./Header";
 import Music from "./Music";
+import Footer from "./Footer";
 import "./styles/App.css";
 
 function App() {
@@ -9,15 +10,18 @@ function App() {
   const [dayTime, setDayTime] = useState<boolean>(false);
 
   return (
-    <>
+    <div className="page-container">
       <Header />
-      <div className="weather">
-        <Weather weatherCheck={setWeatherDesc} daytime={setDayTime} />
+      <div className="page-content">
+        <div className="weather">
+          <Weather weatherCheck={setWeatherDesc} daytime={setDayTime} />
+        </div>
+        <div className="music">
+          <Music weather={weatherDesc} daytime={dayTime} />
+        </div>
       </div>
-      <div className="music">
-        <Music weather={weatherDesc} daytime={dayTime} />
-      </div>
-    </>
+      <Footer />
+    </div>
   );
 }
 
